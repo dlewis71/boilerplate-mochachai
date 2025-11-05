@@ -36,7 +36,7 @@ app.put('/travellers', function(req, res) {
   res.json(response);
 });
 
-// POST /travellers (for form submit, if needed)
+// POST /travellers
 app.post('/travellers', function(req, res) {
   var surname = req.body.surname;
   var response = {};
@@ -53,9 +53,11 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/views/index.html'));
 });
 
-// Start server
-var server = app.listen(PORT, function() {
-  console.log('Listening on port ' + PORT);
-});
+// Only listen if this file is run directly (not required by tests)
+if (!module.parent) {
+  var listener = app.listen(PORT, function() {
+    console.log('Listening on port ' + PORT);
+  });
+}
 
-module.exports = server; // Export server for chai-http and Zombie.js
+module.exports = app;
